@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import pandas as pd
 from pybel.constants import PYBEL_DATA_DIR
 from pybel_tools.definition_utils import write_namespace
@@ -27,7 +28,7 @@ def get_data():
     return df
 
 
-def get_chemblp_names(df = None):
+def get_chemblp_names(df=None):
     """Processes the source data.
 
     :param pandas.DataFrame df: A data frame containing the original data source
@@ -38,7 +39,8 @@ def get_chemblp_names(df = None):
     entries = set(df['chembl_id'].unique())
     return entries
 
-def get_uniprot_names(df = None):
+
+def get_uniprot_names(df=None):
     """Processes the source data.
 
     :param pandas.DataFrame df: A data frame containing the original data source
@@ -48,6 +50,7 @@ def get_uniprot_names(df = None):
     df = get_data() if df is None else df
     entries = set(df['uniprot_id'].unique())
     return entries
+
 
 def write_chemblp_belns(file, df=None):
     """Writes the ChEMBL Protein Families as a BEL namespace file.
@@ -72,6 +75,7 @@ def write_chemblp_belns(file, df=None):
         file=file
     )
 
+
 def write_uniprot_belns(file, df=None):
     """Writes the UniProt Protein Families as a BEL namespace file.
 
@@ -85,7 +89,7 @@ def write_uniprot_belns(file, df=None):
         namespace_keyword="UNIPROT",
         namespace_domain="Gene and Gene Products",
         namespace_species='9606',
-        namespace_description="ChEMBL Identifiers for proteins",
+        namespace_description="UniProt Identifiers for proteins",
         citation_name=CHEMBL_UNIPROT_MAPPING,
         author_name='Charles Tapley Hoyt',
         author_contact="charles.hoyt@scai.fraunhofer.de",
@@ -94,6 +98,7 @@ def write_uniprot_belns(file, df=None):
         functions="P",
         file=file
     )
+
 
 if __name__ == "__main__":
     df = get_data()
