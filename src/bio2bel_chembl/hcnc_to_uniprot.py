@@ -61,6 +61,9 @@ def write_hgnc_protein_families(file, df=None):
         uniprot_clean = ensure_quotes(str(uniprot_id).strip())
         hgnc_clean = ensure_quotes(str(hgnc_id).strip())
 
+        if uniprot_clean == 'nan' or hgnc_clean == 'nan':
+            continue
+
         print('p(UNIPROT:{}) eq p(HGNC:{})'.format(uniprot_clean, hgnc_clean), file=file)
 
 
