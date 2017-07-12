@@ -19,6 +19,9 @@ SQLITE_SELECT_TEXT = "select * from molecule_dictionary ;"
 #"WHERE TYPE = 'table' AND name = 'chembl_id_lookup'"
 #print(SQLITE_SELECT_TEXT)
 
+#select * from molecule_dictionary join molecule_synonyms on molecule_dictionary.molregno = molecule_synonyms.molregno
+
+
 def get_data(db_str ,sqlite_str):
     """Gets the source data.
 
