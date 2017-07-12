@@ -19,18 +19,19 @@ SQLITE_SELECT_TEXT = "select * from molecule_dictionary ;"
 #"WHERE TYPE = 'table' AND name = 'chembl_id_lookup'"
 #print(SQLITE_SELECT_TEXT)
 
-def get_data(sqlite_str):
+def get_data(db_str ,sqlite_str):
     """Gets the source data.
 
+    :param db_str string: path to sqlite database file
     :param sqlite_str string: SQL query command that will be executed
     :return: A data frame containing the original source data
     :rtype: pandas.DataFrame
     """
     print(sqlite_str)
-    db = sqlite3.connect(CHEMBL_DB)
+    db = sqlite3.connect(db_str)
     df = pd.read_sql_query(SQLITE_SELECT_TEXT, db)
     return df
 
 if __name__ == "__main__":
-    df = get_data(SQLITE_SELECT_TEXT)
+    df = get_data(CHEMBL_DB, SQLITE_SELECT_TEXT)
     print(df.head())
