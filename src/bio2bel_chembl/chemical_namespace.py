@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+"""
+Download file ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_23_sqlite.tar.gz
+Unzip chembl_23.db file into $HOME/.pybel/data/bio2bel/chembl/chembl_23_sqlite/
+"""
 import logging
 import os
 import sqlite3
@@ -94,7 +97,7 @@ def write(output):
 
 @main.command()
 def deploy():
-    """deploys chemical namespace to artyfactory"""
+    """deploys chemical namespace to artifactory"""
     f_name = get_today_arty_namespace("chembla")
 
     with open(f_name, 'w') as file:
