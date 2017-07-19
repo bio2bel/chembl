@@ -15,6 +15,7 @@ CHEMBL_SQLITE3_DB_DIR = os.path.join(CHEMBL_DATA_DIR, 'chembl_23_sqlite')
 CHEMBL_DB = CHEMBL_SQLITE3_DB_DIR + "/chembl_23.db"
 
 SQLITE_SELECT_TEXT = "select * from molecule_dictionary ;"
+test_query = 'select molecule_dictionary.chembl_id, molecule_dictionary.chebi_par_id, molecule_synonyms.molsyn_id, molecule_synonyms.res_stem_id from molecule_dictionary join molecule_synonyms on molecule_dictionary.molregno = molecule_synonyms.molregno;'
 
 #"WHERE TYPE = 'table' AND name = 'chembl_id_lookup'"
 #print(SQLITE_SELECT_TEXT)
@@ -32,11 +33,19 @@ def get_data(db_str=None , sqlite_str=None):
     """
     db_str = CHEMBL_DB if db_str is None else db_str
     sqlite_str = SQLITE_SELECT_TEXT if sqlite_str is None else sqlite_str
-    print(sqlite_str + ' __IN_DATABASE__ ' + CHEMBL_DB)
+    print(sqlite_str + ' __IN_ ' + CHEMBL_DB)
     db = sqlite3.connect(db_str)
-    df = pd.read_sql_query(SQLITE_SELECT_TEXT, db)
+    df = pd.read_sql_query(sqlite_str, db)
     return df
 
+def write_chemical_belns(file, df=None):
+    """Writes the Entities as a BEL namespace file.
+
+    :param file file: A writable file or file-like
+    :param pandas.DataFrame df: A data frame containing the original data source
+    """
+
+
 if __name__ == "__main__":
-    df = get_data(CHEMBL_DB, SQLITE_SELECT_TEXT)
+    df = get_data(CHEMBL_DB, test_query)
     print(df.head())
