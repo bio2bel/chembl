@@ -22,7 +22,7 @@ SQLITE_SELECT_TEXT = "select * from molecule_dictionary ;"
 #select * from molecule_dictionary join molecule_synonyms on molecule_dictionary.molregno = molecule_synonyms.molregno
 
 
-def get_data(db_str ,sqlite_str):
+def get_data(db_str=None , sqlite_str=None):
     """Gets the source data.
 
     :param db_str string: path to sqlite database file
@@ -30,7 +30,9 @@ def get_data(db_str ,sqlite_str):
     :return: A data frame containing the original source data
     :rtype: pandas.DataFrame
     """
-    print(sqlite_str)
+    db_str = CHEMBL_DB if db_str is None else db_str
+    sqlite_str = SQLITE_SELECT_TEXT if sqlite_str is None else sqlite_str
+    print(sqlite_str + ' __IN_DATABASE__ ' + CHEMBL_DB)
     db = sqlite3.connect(db_str)
     df = pd.read_sql_query(SQLITE_SELECT_TEXT, db)
     return df
