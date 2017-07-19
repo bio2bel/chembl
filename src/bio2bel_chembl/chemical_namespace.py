@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import sqlite3
+import sys
 
+import click
 import pandas as pd
 from pybel.constants import NAMESPACE_DOMAIN_CHEMICAL
 from pybel.constants import PYBEL_DATA_DIR
 from pybel_tools.definition_utils import write_namespace
+
+log = logging.getLogger(__name__)
 
 CHEMBL_DATA_DIR = os.path.join(PYBEL_DATA_DIR, 'bio2bel', 'chembl')
 if not os.path.exists(CHEMBL_DATA_DIR):
@@ -32,7 +37,7 @@ def get_data(db=None, sql=None):
     """
     db = CHEMBL_DB if db is None else db
     sql = SQLITE_SELECT_TEXT if sql is None else sql
-    print(sql + ' __IN_ ' + CHEMBL_DB)
+    log.info(sql + ' __IN_ ' + CHEMBL_DB)
     db = sqlite3.connect(db)
     df = pd.read_sql_query(sql, db)
     return df
@@ -75,8 +80,18 @@ def write_chemical_belns(file, df=None):
     )
 
 
-if __name__ == "__main__":
-    dff = get_data(CHEMBL_DB, SQLITE_SELECT_TEXT)
-    with open(os.path.join(CHEMBL_DATA_DIR, "chembla.belns"), 'w') as f:
-        write_chemical_belns(f, dff)
-    print(dff.head())
+@click.group(help='cli for bio2bel chembl')
+def main():
+    pass
+
+
+@main.command()
+@click.option('--output', type=click.File('w'), default=sys.stdout)
+def write(output):
+    write_chemical_belns(output)
+
+
+if __name__ == '__main__':
+    log.setLevel(20)
+    logging.basicConfig(level=20)
+    main()
