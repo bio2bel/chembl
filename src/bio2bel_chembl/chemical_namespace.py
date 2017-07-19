@@ -10,6 +10,7 @@ import pandas as pd
 from pybel.constants import NAMESPACE_DOMAIN_CHEMICAL
 from pybel.constants import PYBEL_DATA_DIR
 from pybel_tools.definition_utils import write_namespace
+from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
 
 log = logging.getLogger(__name__)
 
@@ -89,6 +90,17 @@ def main():
 @click.option('--output', type=click.File('w'), default=sys.stdout)
 def write(output):
     write_chemical_belns(output)
+
+
+@main.command()
+def deploy():
+    """deploys chemical namespace to artyfactory"""
+    f_name = get_today_arty_namespace("chembla")
+
+    with open(f_name, 'w') as file:
+        write_chemical_belns(file)
+
+    deploy_namespace(f_name, 'chembla')
 
 
 if __name__ == '__main__':
