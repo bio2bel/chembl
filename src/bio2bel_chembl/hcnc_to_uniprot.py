@@ -39,8 +39,8 @@ def write_hgnc_protein_families(file, df=None):
 
     write_boilerplate(
         document_name='HGNC Gene Family Definitions',
-        authors='Charles Tapley Hoyt',
-        contact='charles.hoyt@scai.fraunhofer.de',
+        authors='Aram Grigoryan',
+        contact='aram.grigoryan@scai.fraunhofer.de',
         licenses='Creative Commons by 4.0',
         copyright='Copyright (c) 2017 Charles Tapley Hoyt. All Rights Reserved.',
         description="""This BEL document represents the gene families curated by HGNC, describing various functional, structural, and logical classifications""",
