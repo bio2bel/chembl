@@ -1,3 +1,2 @@
 pandas
 pybel_tools
-sqlite3
