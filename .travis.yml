@@ -1,0 +1,16 @@
+sudo: false
+cache: pip
+
+language: python
+
+python:
+    - 3.6
+
+install:
+    - pip install tox
+
+script:
+    - travis_wait 30 tox
+
+notifications:
+  slack: pybel:n2KbWKBum3musnBg3L76gGwq
