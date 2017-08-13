@@ -11,6 +11,7 @@ META_PATH = os.path.join('src', 'bio2bel_chembl', '__init__.py')
 INSTALL_REQUIRES = [
     'pybel_tools',
     'ols_client',
+    'click',
 ]
 ENTRY_POINTS = {
     'bio2bel': [

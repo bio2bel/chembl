@@ -3,25 +3,26 @@
 import sys
 
 import click
-from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
 
+from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
 from .chemical_namespace import write_chemical_belns
 
 
-@click.group(help='cli for bio2bel chembl')
+@click.group()
 def main():
-    pass
+    """ChEMBL to BEL"""
 
 
 @main.command()
 @click.option('--output', type=click.File('w'), default=sys.stdout)
 def write(output):
+    """Write chemical namespace"""
     write_chemical_belns(output)
 
 
 @main.command()
 def deploy():
-    """deploys chemical namespace to artifactory"""
+    """Deploy chemical namespace to Artifactory"""
     f_name = get_today_arty_namespace("chembla")
 
     with open(f_name, 'w') as file:
