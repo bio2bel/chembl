@@ -14,7 +14,7 @@ INSTALL_REQUIRES = [
 ]
 ENTRY_POINTS = {
     'bio2bel': [
-        'chebml = bio2bel_chembl',
+        'chembl = bio2bel_chembl',
     ],
     'console_scripts': [
         'bio2bel_chembl = bio2bel_chembl.cli:main',
