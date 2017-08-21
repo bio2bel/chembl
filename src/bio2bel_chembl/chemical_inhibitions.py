@@ -60,7 +60,7 @@ def write_chemical_inhibition_file(file, df=None, standard_type='IC50', standard
     :param pandas.DataFrame df: A data frame containging the original data source
     """
 
-    df = get_data(standart_type=standard_type, standard_value=standard_value) if df is None else df
+    df = get_data(standard_type=standard_type, standard_value=standard_value) if df is None else df
 
     write_boilerplate(
         document_name='ChEMBL Chemical Inhibition Activity BEL script',
