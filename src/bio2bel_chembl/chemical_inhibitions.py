@@ -6,15 +6,11 @@ Unzip chembl_23.db file into $HOME/.pybel/data/bio2bel/chembl/chembl_23_sqlite/
 import logging
 import os
 import sqlite3
-import sys
-import pandas as pd
 
-from pybel.constants import NAMESPACE_DOMAIN_CHEMICAL
+import pandas as pd
 from pybel.constants import PYBEL_DATA_DIR
-from pybel_tools.definition_utils import write_namespace
-from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
-from pybel_tools.document_utils import write_boilerplate
 from pybel.utils import ensure_quotes
+from pybel_tools.document_utils import write_boilerplate
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +21,9 @@ if not os.path.exists(CHEMBL_DATA_DIR):
 CHEMBL_SQLITE3_DB_DIR = os.path.join(CHEMBL_DATA_DIR, 'chembl_23_sqlite')
 CHEMBL_DB = os.path.join(CHEMBL_SQLITE3_DB_DIR, "chembl_23.db")
 
-SQLITE_SELECT_TEXT = """
+
+def sql_query(standard_type='IC50', standard_value=10000):
+    SQLITE_SELECT_TEXT = """
 select target_dictionary.chembl_id as chembl_target_p , chembl_molecule_id
 from target_dictionary join
 (select chembl_molecule_id, tid
@@ -33,11 +31,13 @@ from assays join
 (select molecule_dictionary.chembl_id as chembl_molecule_id, molregno, activity_id, assay_id
 from molecule_dictionary join ( select molregno, activity_id, assay_id
 								from activities
-								where standard_type = 'IC50' and standard_value <= 10000)
+								where standard_type = '{}' and standard_value <= {})
 						 using (molregno) ) using (assay_id)) using (tid);
-"""
+""".format(standard_type, standard_value)
+    return SQLITE_SELECT_TEXT
 
-def get_data(db=None, sql=None):
+
+def get_data(db=None, sql=None, standard_type='IC50', standard_value=10000):
     """Gets the source data.
 
     :param str db: path to sqlite database file
@@ -46,20 +46,21 @@ def get_data(db=None, sql=None):
     :rtype: pandas.DataFrame
     """
     db = CHEMBL_DB if db is None else db
-    sql = SQLITE_SELECT_TEXT if sql is None else sql
-    #log.info(sql + ' __IN_ ' + CHEMBL_DB)
+    sql = sql_query(standard_type=standard_type, standard_value=standard_value) if sql is None else sql
+
     db = sqlite3.connect(db)
     df = pd.read_sql_query(sql, db)
     return df
 
-def write_chemical_inhibition_file(file, df=None):
+
+def write_chemical_inhibition_file(file, df=None, standard_type='IC50', standard_value=10000):
     """Writes the ChEMBL ID to inchi equivalence a BEL script
 
     :param file file: A writable file or file-like
     :param pandas.DataFrame df: A data frame containging the original data source
     """
 
-    df = get_data() if df is None else df
+    df = get_data(standart_type=standard_type, standard_value=standard_value) if df is None else df
 
     write_boilerplate(
         document_name='ChEMBL Chemical Inhibition Activity BEL script',
@@ -67,7 +68,8 @@ def write_chemical_inhibition_file(file, df=None):
         contact='aram.grigoryan@scai.fraunhofer.de',
         licenses='Creative Commons by 4.0',
         copyright='Copyright (c) 2017 Aram Grigoryan. All Rights Reserved.',
-        description="""This BEL document represents chemical inhibition information""",
+        description="""This BEL document represents chemical inhibition information, with standard_type = '{}', standard_value = {}""".format(
+            standard_type, standard_value),
         namespace_dict={
             'CHEMBLA': 'https://arty.scai.fraunhofer.de/artifactory/bel/namespace/chembla/chembla-20170719.belns',
             'CHEMBLP': 'n/a',
@@ -81,7 +83,7 @@ def write_chemical_inhibition_file(file, df=None):
     print('SET Citation = {{"URL","{}"}}'.format("http://chembl.blogspot.de/2017/05/chembl23-released.html"), file=file)
     print('SET Evidence = "ChEMBL to INCHI mapping"', file=file)
 
-    for _,molecule_id, prot_id in df[['chembl_molecule_id', 'chembl_target_p']].itertuples():
+    for _, molecule_id, prot_id in df[['chembl_molecule_id', 'chembl_target_p']].itertuples():
         molecule_clean = ensure_quotes(str(molecule_id).strip())
         prot_clean = ensure_quotes(str(prot_id).strip())
 
@@ -95,7 +97,7 @@ if __name__ == '__main__':
     log.setLevel(20)
     logging.basicConfig(level=20)
 
-    dff = get_data()
-    #log.info(dff.head())
+    dff = get_data(standard_type='IC50', standard_value=10000)
+    # log.info(dff.head())
     with open(os.path.join(CHEMBL_DATA_DIR, 'chemical_inhibition.bel'), 'w') as f:
-        write_chemical_inhibition_file(f, dff)
+        write_chemical_inhibition_file(f, dff, standard_type='IC50', standard_value=10000)
