@@ -6,11 +6,18 @@ language: python
 python:
     - 3.6
 
+before_install:
+    - pip install codecov
+
 install:
     - pip install tox
 
 script:
     - travis_wait 30 tox
+
+after_success:
+    - tox -e coverage-report
+    - codecov
 
 notifications:
   slack: pybel:n2KbWKBum3musnBg3L76gGwq
