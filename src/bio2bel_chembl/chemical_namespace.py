@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+
 """
 Download file ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_23_sqlite.tar.gz
 Unzip chembl_23.db file into $HOME/.pybel/data/bio2bel/chembl/chembl_23_sqlite/
 """
+
 import logging
 import os
 import sqlite3
@@ -10,10 +12,11 @@ import sys
 
 import click
 import pandas as pd
-from pybel.constants import NAMESPACE_DOMAIN_CHEMICAL
-from pybel.constants import PYBEL_DATA_DIR
-from pybel_tools.definition_utils import write_namespace
-from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
+
+from pybel.constants import NAMESPACE_DOMAIN_CHEMICAL, PYBEL_DATA_DIR
+from pybel.resources.arty import get_today_arty_namespace
+from pybel.resources.definitions import write_namespace
+from pybel.resources.deploy import deploy_namespace
 
 log = logging.getLogger(__name__)
 
@@ -25,9 +28,9 @@ CHEMBL_SQLITE3_DB_DIR = os.path.join(CHEMBL_DATA_DIR, 'chembl_23_sqlite')
 CHEMBL_DB = os.path.join(CHEMBL_SQLITE3_DB_DIR, "chembl_23.db")
 
 SQLITE_SELECT_TEXT = """
-select 
+SELECT 
   chembl_id
-from molecule_dictionary
+FROM molecule_dictionary
 """
 
 

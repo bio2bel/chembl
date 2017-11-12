@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
+
 """Download ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_23_chemreps.txt.gz
 Unpack chembl_23_chemreps.txt into CHEMBL_DATA_DIR"""
+
 import logging
 import os
 
 import pandas as pd
 
-log = logging.getLogger(__name__)
-
 from pybel.constants import PYBEL_DATA_DIR
-from pybel_tools.document_utils import write_boilerplate
-from pybel.utils import ensure_quotes
 from pybel.resources.defaults import INCHI_PATTERN
+from pybel.utils import ensure_quotes
+from pybel_tools.document_utils import write_boilerplate
+
+log = logging.getLogger(__name__)
 
 CHEMBL_DATA_DIR = os.path.join(PYBEL_DATA_DIR, 'bio2bel', 'chembl')
 if not os.path.exists(CHEMBL_DATA_DIR):
@@ -53,13 +55,13 @@ def write_chembl_inchi_belscript(file, df=None):
         licenses='Creative Commons by 4.0',
         copyright='Copyright (c) 2017 Charles Tapley Hoyt. All Rights Reserved.',
         description="""This BEL document represents ChEMBL ID to inchi strings equivalence""",
-        namespace_dict={
+        namespace_url={
             'CHEMBLA': 'https://arty.scai.fraunhofer.de/artifactory/bel/namespace/chembla/chembla-20170719.belns',
             'INCHI': INCHI_PATTERN,
         },
         namespace_patterns={},
-        annotations_dict={},
-        annotations_patterns={},
+        annotation_url={},
+        annotation_patterns={},
         file=file
     )
 

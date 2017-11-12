@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+
 """
 Download file ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_23_sqlite.tar.gz
 Unzip chembl_23.db file into $HOME/.pybel/data/bio2bel/chembl/chembl_23_sqlite/
 """
+
 import logging
 import os
 import sqlite3
 
 import pandas as pd
+
 from pybel.constants import PYBEL_DATA_DIR
 from pybel.utils import ensure_quotes
 from pybel_tools.document_utils import write_boilerplate
@@ -63,20 +66,20 @@ def write_chemical_inhibition_file(file, df=None, standard_type='IC50', standard
     df = get_data(standard_type=standard_type, standard_value=standard_value) if df is None else df
 
     write_boilerplate(
-        document_name='ChEMBL Chemical Inhibition Activity BEL script',
+        name='ChEMBL Chemical Inhibition Activity BEL script',
         authors='Aram Grigoryan',
         contact='aram.grigoryan@scai.fraunhofer.de',
         licenses='Creative Commons by 4.0',
         copyright='Copyright (c) 2017 Aram Grigoryan. All Rights Reserved.',
         description="""This BEL document represents chemical inhibition information, with standard_type = '{}', standard_value = {}""".format(
             standard_type, standard_value),
-        namespace_dict={
+        namespace_url={
             'CHEMBLA': 'https://arty.scai.fraunhofer.de/artifactory/bel/namespace/chembla/chembla-20170719.belns',
             'CHEMBLP': 'n/a',
         },
         namespace_patterns={},
-        annotations_dict={},
-        annotations_patterns={},
+        annotation_url={},
+        annotation_patterns={},
         file=file
     )
 
