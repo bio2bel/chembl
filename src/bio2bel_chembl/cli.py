@@ -4,7 +4,8 @@ import sys
 
 import click
 
-from pybel_tools.resources import get_today_arty_namespace, deploy_namespace
+from pybel.resources.arty import get_today_arty_namespace
+from pybel.resources.deploy import deploy_namespace
 from .chemical_namespace import write_chemical_belns
 
 

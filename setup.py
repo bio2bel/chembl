@@ -9,9 +9,10 @@ import setuptools
 PACKAGES = setuptools.find_packages(where='src')
 META_PATH = os.path.join('src', 'bio2bel_chembl', '__init__.py')
 INSTALL_REQUIRES = [
-    'pybel_tools',
-    'ols_client',
     'click',
+    'pybel>=0.9.5',
+    'pybel_tools>0.4.5',
+    'ols_client',
 ]
 ENTRY_POINTS = {
     'bio2bel': [

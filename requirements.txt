@@ -1,3 +1,4 @@
-pandas
-pybel_tools
 click
+pandas
+pybel>=0.9.5
+pybel_tools>=0.4.5
