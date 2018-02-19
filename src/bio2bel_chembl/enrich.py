@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import json
-
 from chembl_webresource_client.new_client import new_client
 
-from pybel.constants import FUNCTION, NAME, NAMESPACE, PROTEIN
+from pybel.constants import CITATION_REFERENCE, CITATION_TYPE, FUNCTION, NAME, NAMESPACE, PROTEIN
 from pybel.dsl import abundance
 
 __all__ = [
@@ -38,10 +36,6 @@ def search_target(graph, node):
 
     res = target.filter(target_synonym__icontains=name, target_organism__exact='Homo sapiens')
 
-    print(json.dumps(res[0], indent=4))
-    for e in res:
-        print(e)
-
     top = res[0]
     chembl_id = top['target_chembl_id']
 
@@ -49,7 +43,7 @@ def search_target(graph, node):
 
 
 def enrich_target(graph, node):
-    """
+    """Enrich a target
 
     :param pybel.BELGraph graph:
     :param tuple node:
@@ -58,23 +52,22 @@ def enrich_target(graph, node):
 
     results = activities.filter(target_chembl_id=target_chembl_id, published_type='IC50')
 
-    print('Activities\n')
-
     for act in results:
-        print(json.dumps(act, indent=4))
-
         relation = act['standard_relation']
         value = act['standard_value']
+
+        document = act['document_chembl_id']
+        evidence = act['assay_description']
 
         if relation == '=':
             if float(value) > 40000:
                 continue
-        else:
-            print(relation)
 
         graph.add_inhibits(
             abundance(namespace='CHEMBL', identifier=act['']),
-            node
+            node,
+            citation={CITATION_TYPE: 'CHEMBL', CITATION_REFERENCE: document},
+            evidence=evidence
         )
 
 
