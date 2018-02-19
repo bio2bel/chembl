@@ -1,4 +1,5 @@
 click
 pandas
-pybel>=0.9.5
-pybel_tools>=0.4.5
+pybel>=0.11.1
+pybel_tools>=0.5.0
+chembl_webresource_client
