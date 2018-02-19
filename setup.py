@@ -10,9 +10,7 @@ PACKAGES = setuptools.find_packages(where='src')
 META_PATH = os.path.join('src', 'bio2bel_chembl', '__init__.py')
 INSTALL_REQUIRES = [
     'click',
-    'pandas'
     'pybel>=0.11.1',
-    'pybel_tools>=0.5.0',
     'chembl_webresource_client',
 ]
 ENTRY_POINTS = {
