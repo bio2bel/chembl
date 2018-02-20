@@ -65,7 +65,7 @@ def enrich_target(graph, node):
                 continue
 
         graph.add_inhibits(
-            abundance(namespace='CHEMBL', identifier=molecule),
+            abundance(namespace='CHEMBL', name=molecule),
             node,
             citation={CITATION_TYPE: 'CHEMBL', CITATION_REFERENCE: document},
             evidence=evidence
