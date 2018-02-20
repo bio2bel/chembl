@@ -53,6 +53,7 @@ def enrich_target(graph, node):
     results = activities.filter(target_chembl_id=target_chembl_id, published_type='IC50')
 
     for act in results:
+        molecule = act['molecule_chembl_id']
         relation = act['standard_relation']
         value = act['standard_value']
 
@@ -64,7 +65,7 @@ def enrich_target(graph, node):
                 continue
 
         graph.add_inhibits(
-            abundance(namespace='CHEMBL', identifier=act['']),
+            abundance(namespace='CHEMBL', identifier=molecule),
             node,
             citation={CITATION_TYPE: 'CHEMBL', CITATION_REFERENCE: document},
             evidence=evidence
