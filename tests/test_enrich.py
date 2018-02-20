@@ -21,7 +21,7 @@ class TestEnrich(unittest.TestCase):
         self.assertLess(0, graph.number_of_edges(), msg='should have added edges')
 
         # https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL779
-        tadalafil = abundance(namespace='CHEBML', identifier='CHEMBL779')
+        tadalafil = abundance(namespace='CHEBML', name='CHEMBL779')
 
         self.assertIn(tadalafil.as_tuple(), graph, msg='missing inhibitor')
 
