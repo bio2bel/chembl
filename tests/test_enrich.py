@@ -23,7 +23,7 @@ class TestEnrich(unittest.TestCase):
         # https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL779
         tadalafil = abundance(namespace='CHEBML', name='CHEMBL779')
 
-        self.assertIn(tadalafil.as_tuple(), graph, msg='missing inhibitor')
+        self.assertIn(tadalafil.as_tuple(), graph, msg='missing inhibitor. Graph has: {}'.format('\n'.join(graph.nodes())))
 
 
 if __name__ == '__main__':
